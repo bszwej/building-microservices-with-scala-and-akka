@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Building Microservices with Scala and Akka</title>
+
+    <meta name="description" content="An introductory presentation to microservices with Scala and Akka.">
+    <meta name="author" content="Bartlomiej Szwej">
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/bs-custom.css" id="theme">
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+
+<body>
+
+<div class="reveal">
+    <div class="slides">
+
+        <section data-background="img/hack_your_career.jpg">
+            <p></p>
+        </section>
+
+        <section data-background="img/hack_your_career.jpg"
+                 data-state="dim-animation"
+                 data-background-transition="none">
+
+            <h3>Building Microservices</h3>
+            <h3>with <span class="red">Scala</span> and <span class="blue">Akka</span>
+            </h3>
+
+            <div class="author-info">
+                <h4>
+                    <a href="https://bszwej.github.io">Bartłomiej Szwej</a> |
+
+                    <i class="ion-social-twitter-outline"></i>
+                    <a href="https://twitter.com/bszwej">bszwej</a> |
+
+                    <i class="ion-social-github-outline"></i>
+                    <a href="https://github.com/bszwej">bszwej</a>
+                </h4>
+            </div>
+        </section>
+
+        <section>
+            <h2>Agenda</h2>
+            <ul>
+                <li>Microservices trade-offs</li>
+                <li>What does it mean to be <strong>Reactive</strong>?</li>
+                <li>Building microservices with Akka</li>
+                <li>Live coding!</li>
+            </ul>
+        </section>
+
+        <section class="section--left">
+            <h3>Microservices trade-offs</h3>
+            <section>
+                <div class="green">
+                    <p class="fragment">+ Strong modularity</p>
+                    <p class="fragment">+ Development scalability</p>
+                    <p class="fragment">+ Freedom in technology choices (Scala, Go, Node, Rust, Elixir, ...)</p>
+                </div>
+                <div class="red">
+                    <p class="fragment">- Increased operations effort</p>
+                    <p class="fragment">- Hard to develop</p>
+                </div>
+            </section>
+        </section>
+
+        <section>
+            <h2>Hard to develop?</h2>
+            <div class="fragment">
+                <pre><code class="hljs" data-trim>
+// In monolith
+val productService = new ProductService(...);
+val products = productService.find("nike");
+                </code></pre>
+            </div>
+            <div class="fragment">
+                <pre><code class="hljs" data-trim>
+// In a microservice
+val http = new HttpClient("https://product.api.io");
+val products =
+   http.get("/products?vendor=nike");
+                </code></pre>
+            </div>
+            <div class="red">
+                <ul>
+                    <li class="fragment">Network error</li>
+                    <li class="fragment">Latency</li>
+                    <li class="fragment">Machine can be down</li>
+                    <li class="fragment">Other failures you <strong>don't</strong> expect!</li>
+                </ul>
+            </div>
+        </section>
+
+        <section data-background="#15B6CA" data-background-transition="zoom">
+        </section>
+
+        <section class=".section--theme-light" data-background="#15B6CA">
+            <h2>Reactive Manifesto</h2>
+            <section>
+                <ul>
+                    <p>A <strong class="red">reactive</strong> system is:</p>
+
+                    <li>Responsive</li>
+                    <li>Resilient</li>
+                    <li>Elastic</li>
+                    <li>Message Driven</li>
+                </ul>
+
+            </section>
+            <section>
+                <h3>Responsive = <strong>always</strong> responds in a timely manner.</h3>
+            </section>
+            <section>
+                <h3>Resilient = <strong>always</strong> responsive when failure occurs.</h3>
+            </section>
+            <section>
+                <h3>Elastic = <strong>always</strong> responsive during load peaks.</h3>
+            </section>
+            <section>
+                <h3>Message Driven</h3>
+            </section>
+        </section>
+
+        <section>
+            <section>
+                <h3>Building microservices w/ Akka</h3>
+                <ul>
+                    <li>Asynchronous & nonblocking processing</li>
+                    <li>Actors are very lightweight (~300B)</li>
+                    <li>Failure isolation</li>
+                    <li>Distribution</li>
+                </ul>
+            </section>
+            <section>
+                <h2>Akka-HTTP</h2>
+                <ul>
+                    <li>Both HTTP client and server</li>
+                    <li>Routing DSL</li>
+                    <li>Testkit</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Akka in production</h3>
+                <ul>
+                    <li>
+                        <a href="https://www.lightbend.com/resources/case-studies-and-stories/walmart-boosts-conversions-by-20-with-lightbend-reactive-platform">Walmart</a>
+                    </li>
+                    <li>
+                        <a href="https://www.lightbend.com/resources/case-studies-and-stories/zalando-meets-100x-traffic-spikes-with-a-smile-using-reactive-platform">Zalando</a>
+                    </li>
+                    <li>
+                        <a href="https://www.lightbend.com/resources/case-studies-and-stories/delivering-on-the-guardians-digital-first-vision">theguardian</a>
+                    </li>
+                    <li>
+                        <a href="https://www.lightbend.com/resources/case-studies-and-stories/holidaychecks-journey-with-lightbend">HolidayCheck</a>
+                    </li>
+                    <li>
+                        <a href="https://www.lightbend.com/resources/case-studies-and-stories/unicredit-powers-fast-data-customer-insight-platform-with-apache-spark-scala-akka-and-play">UniCredit</a>
+                    </li>
+                    <li>
+                        <a href="https://www.lightbend.com/resources/case-studies-and-stories/how-hootsuite-modernized-its-url-shortener">Hootsuite</a>
+                    </li>
+                    <li>
+                        <a href="https://www.lightbend.com/resources/case-studies-and-stories/samsung-strategy-and-innovation-center-executes-iot-vision-at-startup-speed-with-reactive-architecture">Samsung</a>
+                    </li>
+                    <li>...</li>
+                </ul>
+            </section>
+            <section><h2>... and Akka is still just a toolkit...</h2></section>
+        </section>
+
+
+        <section>
+            <section><h2>Live coding</h2></section>
+            <section data-background-image="img/akka_http_microservice.png" data-background-size="700px"
+                     data-background-color="#ffffff">
+                <p></p>
+            </section>
+        </section>
+
+        <section>
+            <h2>Learning resources</h2>
+            <ul>
+                <li>
+                    <a href="https://www.coursera.org/learn/progfun1">
+                        Functional Programming Principles in Scala
+                    </a>
+                    - a course taught by Martin Odersky
+                </li>
+                <li>
+                    <a href="http://booksites.artima.com/programming_in_scala_3ed">
+                        Programming in Scala, Third Edition
+                    </a>
+                    - a book by Martin Odersky
+                </li>
+                <li>
+                    <a href="https://www.scala-exercises.org/std_lib/asserts">
+                        Scala Exercises
+                    </a>
+                    - by <a href="http://www.47deg.com/">47deg</a>
+                </li>
+                <li>
+                    <a href="http://danielwestheide.com/scala/neophytes.html">
+                        The Neophyte's Guide to Scala
+                    </a>
+                    - an introductory tutorial by Daniel Westheide
+                </li>
+                <li>
+                    <a href="https://www.manning.com/books/functional-programming-in-scala">
+                        Functional Programming in Scala
+                    </a>
+                    - a book by Paul Chiusano and Rúnar Bjarnason
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h1>Q&A</h1>
+        </section>
+
+        <section>
+            <h1>Thank you!</h1>
+        </section>
+
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+    Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+
+        transition: 'slide',
+        dependencies: [
+            {
+                src: 'lib/js/classList.js', condition: function () {
+                return !document.body.classList;
+            }
+            },
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            },
+            {src: 'plugin/notes/notes.js', async: true}
+        ]
+    });
+</script>
+</body>
+</html>
